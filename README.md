@@ -1,16 +1,16 @@
-> Credit: Totally inspired by @ahmetb's [latest blog post about building container images in Go.](ahmet.im/blog/building-container-images-in-go), please read this post before you move on to the hands on section.
+> Credit: Inspired by @ahmetb's [latest blog post about building container images in Go.](ahmet.im/blog/building-container-images-in-go), please read this post before you move on to the hands-on section.
 
-# What is crane tool ?
+# What is a crane tool?
 
 <img src="https://github.com/google/go-containerregistry/raw/main/images/crane.png" height="300"/>
 
-Google has a repository called ["go-containerregistry"](https://github.com/google/go-containerregistry) which provides Go library and CLIs for working with container registries, [crane](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md) is one of them. More techically, crane is a tool for interacting with remote images and registries.
+Google has a repository called ["go-containerregistry"](https://github.com/google/go-containerregistry) which provides Go library and CLIs for working with container registries, [crane](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md) is one of them. More technically, the crane is a tool for interacting with remote images and registries.
 
 # Hands On
 
-Lets start with explaining the demo, first, we have a directory that includes a basic Go application which is print the content of the file to stdout, we'll start with building the container image from the project itself, then with the crane, we'll add a new layer to it using hello-world.txt that exist in the layer directory, by doing so, we'll update the content of the file, hello-world.txt in that case.
+Let's start with explaining the demo, first, we have a directory that includes a basic Go application that prints the content of the file to stdout, we'll start with building the container image, then with crane, we'll add a new layer to it using hello-world.txt that is available in the [layer/](./layer) directory, by doing so, we'll update the content of the file that is available within the container image.
 
-Lets take a look at the Dockerfile of the project.
+Let's take a look at the Dockerfile of the project.
 ```Dockerfile
 FROM golang:1.15.7-alpine
 
@@ -21,7 +21,7 @@ COPY ./ ./
 ENTRYPOINT ["go", "run", "main.go"]
 ```
 
-its very straightforward, then take look at the go code.
+it's very straightforward, then take a look at the go code.
 ```golang
 package main
 
@@ -41,9 +41,9 @@ func main() {
 }
 ```
 
-its also very straightforward too.
+it's very straightforward too.
 
-Lets build the container image, in that case we need docker to build the container image.
+Let's build the container image, in that case, we need docker to build the container image.
 ```bash
 $ docker image build -t devopps/read-file-and-write-to-sdout:latest .
 [+] Building 7.3s (9/9) FINISHED
@@ -81,17 +81,17 @@ $ docker image build -t devopps/read-file-and-write-to-sdout:latest .
 Run it and verify the output because it should match with the [hello-world.txt](./read-file-and-write-to-sdout/hello-world.txt).
 ```bash
 $ docker container run devopps/read-file-and-write-to-sdout:latest
-2021/02/13 15:12:42 Content of the file is :  hello world
+2021/02/13 15:12:42 Content of the file is:  hello world
 ```
 
-Lets edit this image with the crane by adding a new layer to it, the layer that we are going to add is the same file but with different content. So, if we add the file to the workdir of the image by crane, this code will going to start to use the file that we add with the layer.
+Let's edit this image with the crane by adding a new layer to it, the layer that we are going to add is the same file but with different content. So, if we add the file to the workdir of the image by crane, this code will be going to start to use the file that we add with the layer.
 
 This is the following [content](./layer/hello-world.txt) that we'll add as a final layer of the image.
 ```text
 hello world made by crane
 ```
 
-Lets take a look at the code.
+Let's take a look at the code.
 ```golang
 package main
 
@@ -194,7 +194,7 @@ func addFileToTarWriter(root, targetPath, filePath string, tarWriter *tar.Writer
 
 ```
 
-> IMPORTANT: Before run this code, please shutdown the Docker.
+> IMPORTANT: Before running this code, please shutdown the Docker.
 
 You should notice that, first, we pull the image then we create a layer as tar format that includes my hello-world.txt then we append the new layer to the image.
 
