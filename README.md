@@ -204,6 +204,14 @@ $ go run -v ./main.go
 2021/02/13 18:42:28 image devopps/read-file-and-write-to-sdout:foo pushed to the registry succesfully
 ```
 
+> IMPORTANT: start the Docker again.
+
+Lets verify the output of the container from the edited image.
+```bash
+$ docker container run devopps/read-file-and-write-to-sdout:foo
+2021/02/13 16:29:09 Content of the file is :  hello world made by crane
+```
+
 Tada, it worked.🎉🎉🎉🎉.
 
 
