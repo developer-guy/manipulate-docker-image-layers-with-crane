@@ -6,13 +6,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
 
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/name"
-	"github.com/google/go-containerregistry/pkg/v1/daemon"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
 )
@@ -48,18 +48,18 @@ func main() {
 		panic(err)
 	}
 
-	if s, err := daemon.Write(tag, newImg); err != nil {
-		panic(err)
-	} else {
-		fmt.Println(s)
-	}
+	//if s, err := daemon.Write(tag, newImg); err != nil {
+	//	panic(err)
+	//} else {
+	//	fmt.Println(s)
+	//}
 
 	// push to remote registry
-	//if err := crane.Push(newImg, tag.String()); err != nil {
-	//	panic(err)
-	//}
-	//
-	//log.Printf("image %s pushed to the registry succesfully\n", tag.String())
+	if err := crane.Push(newImg, tag.String()); err != nil {
+		panic(err)
+	}
+
+	log.Printf("image %s pushed to the registry succesfully\n", tag.String())
 }
 
 func addFileToTarWriter(root, targetPath, filePath string, tarWriter *tar.Writer) error {
